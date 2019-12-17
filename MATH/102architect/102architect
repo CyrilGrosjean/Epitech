@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+
+import math
+from sys import argv, stderr
+
+arg_list = ['-t', '-z', '-r', '-s', '-h']
+arg_order = []
+nb_order = []
+original_point = []
+new_point = []
+matrix = [[1.00, 0.00, 0.00], [0.00, 1.00, 0.00], [0.00, 0.00, 1.00]]
+
+def help():
+    print("USAGE:\n     ./102architect x y transfo1 arg11 [arg12] [transfo2 arg12 [arg22]] ...")
+    print("DESCRIPTION:\n     x   abscissa of the orignal point\n     y   ordinate of the original point")
+    print("\n   transfo arg1 [arg2]")
+    print("     -t i j  translation along vector (i, j)")
+    print("     -z m n  scalling by factors m (x-axis) and n (y-axis)")
+    print("     -r d    rotation centered in 0 by a d degree angle")
+    print("     -s d    reflection over the axis passing through 0 with an inclination")
+    print("             angle of d degrees")
+    exit(0)
+
+def display_if_error(error):
+    if error == 0:
+        return 0
+    elif error == 1:
+        stderr.write("Need more numbers after the argument: '" + str(arg_order[-1]) + "'\nFor help, please type './102architect -h'\n")
+        exit(84)
+    elif error == 2:
+        stderr.write("One or more argument are not compatible.\nFor help, please type './102architect -h'\n")
+        exit(84)
+    elif error == 3:
+        stderr.write("Missing original point coordinates.\nFor help, please type './102architect -h'\n")
+        exit(84)
+    elif error == 4:
+        stderr.write("'./102architect -h [...]' isn't correct.\nDid you mean './102architect -h' ?\n")
+        exit(84)
+    elif error == 5:
+        stderr.write("The argument '-h' must be placed lonely.\nUsage: './102architect -h'\n")
+        exit(84)
+    else:
+        stderr.write("Error, unknown origin.\nFor help, please type './102architect -h'\n")
+        exit(84)
+
+def check_args(arg):
+    waiting_numbers = 0
+    j = -1
+
+    try:
+        original_point.append(float(arg[0]))
+        original_point.append(float(arg[1]))
+        new_point.append(float(arg[0]))
+        new_point.append(float(arg[1]))
+    except:
+        if arg[0] == '-h' and len(arg) == 1:
+            help()
+        elif arg[0] == '-h':
+            return 4
+        else:
+            return 3
+
+    del arg[0]
+    del arg[0]
+
+    for i in arg:
+        if waiting_numbers == 0:
+            if i in arg_list:
+                arg_order.append(i)
+                if i in '-t' or i in '-z':
+                    waiting_numbers = 2
+                elif i in '-h':
+                    return 5
+                else:
+                    waiting_numbers = 1
+                j += 1
+                nb_order.append([])
+            else:
+                return 2
+        else:
+            try:
+                nb_order[j].append(int(i))
+                waiting_numbers -= 1
+            except:
+                return 1
+    if waiting_numbers > 0:
+        return 1
+    else:
+        return 0
+
+def set_zero():
+    global matrix
+    for i in range(0, len(matrix)):
+        for a in range(0, len(matrix[i])):
+            if matrix[i][a] == -0.00:
+                matrix[i][a] = 0.00
+
+def calc_matrix(arg_order, nb_order):
+    global matrix
+    index = 0
+    for arg in arg_order:
+        if arg in '-t':
+            print("Translation along vector (" + str(nb_order[index][0]) + ", " + str(nb_order[index][1]) + ")")
+            matrix[0][2] += nb_order[index][0]
+            matrix[1][2] += nb_order[index][1]
+            index += 1
+        elif arg in '-z':
+            print("Scaling by factors " + str(nb_order[index][0]) + " and " + str(nb_order[index][1]))
+            matrix[0][0] *= nb_order[index][0]
+            matrix[1][0] *= nb_order[index][0]
+            matrix[2][0] *= nb_order[index][0]
+            matrix[1][1] *= nb_order[index][1]
+            matrix[0][1] *= nb_order[index][1]
+            matrix[2][1] *= nb_order[index][1]
+            new_point[0] *= nb_order[index][0]
+            new_point[1] *= nb_order[index][1]
+            index += 1
+        elif arg in '-r': # Rotation de l'angie i
+            print("Rotation by a " + str(nb_order[index][0]) + " degree angle")
+            matrix[0][0] = math.cos(nb_order[index][0] / 180 * math.pi)
+            matrix[0][1] = -math.sin(nb_order[index][0] / 180 * math.pi)
+            matrix[1][0] = math.sin(nb_order[index][0] / 180 * math.pi)
+            matrix[1][1] = matrix[0][0]
+            index += 1
+        elif arg in '-s': # reflection over x degrees
+            print("Reflection over an axis with an inclination angle of " + str(nb_order[index][0]) + " degrees")
+            matrix[0][0] = math.cos(2 * nb_order[index][0] / 180 * math.pi)
+            matrix[0][1] = math.sin(2 * nb_order[index][0] / 180 * math.pi)
+            matrix[1][0] = math.sin(2 * nb_order[index][0] / 180 * math.pi)
+            if (matrix[0][0] != 0):
+                matrix[1][1] = -matrix[0][0]
+            else:
+                matrix[1][1] = matrix[0][0]
+            index += 1
+    set_zero()
+    print(str("%.2f" % matrix[0][0]) + "\t" + str("%.2f" % matrix[0][1]) + "\t" + str("%.2f" % matrix[0][2]))
+    print(str("%.2f" % matrix[1][0]) + "\t" + str("%.2f" % matrix[1][1]) + "\t" + str("%.2f" % matrix[1][2]))
+    print(str("%.2f" % matrix[2][0]) + "\t" + str("%.2f" % matrix[2][1]) + "\t" + str("%.2f" % matrix[2][2]))
+    new_point[0] = matrix[0][0] * original_point[0] + matrix[0][1] * original_point[1] + matrix[0][2]
+    new_point[1] = matrix[1][0] * original_point[0] + matrix[1][1] * original_point[1] + matrix[1][2]
+    print("(" + str("%.2f" % original_point[0]) + ", " + str("%.2f" % original_point[1]) + ") => (" + str("%.2f" % new_point[0]) + ", " + str("%.2f" % new_point[1]) + ")")
+
+if len(argv) == 1 or len(argv) == 3:
+    stderr.write("Error: Not enough arguments\n")
+    exit(84)
+arguments = argv
+del arguments[0]
+error = check_args(arguments)
+display_if_error(error)
+calc_matrix(arg_order, nb_order)

@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+import unittest
+import os
+import time
+
+class Testpong(unittest.TestCase):
+    """Test for 101pong program"""
+    def test_help(self):
+        """Unit tests for -h option"""
+        i = os.system("./101pong -h")
+        self.assertEqual(i, 0)
+
+    def test_wrong_launch(self):
+        """Unit tests for wrong launch"""
+        i = os.system("./101pong 5 5 -5 1 2 6 a")
+        self.assertEqual(i, 21504)
+
+    def calculate_launch_without_reach(self):
+        """Unit tests for calculate trajectory"""
+        i = os.system("./101pong 5 5 - 5 1 2 6 3")
+        self.assertEqual(i, 0)
+
+    def calculate_launch_with_paddle(self):
+        """Unit tests for calculate trajectory"""
+        i = os.system("./101pong 2 -3 6 2 5 2 2")
+        self.assertEqual(i, 0)
+
+os.chdir("../")
+unittest.main()

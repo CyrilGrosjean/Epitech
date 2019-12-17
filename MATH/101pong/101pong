@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+import math
+from sys import argv, stderr
+
+def calculate(x0, y0, z0, x1, y1, z1, n):
+    velocity = [x1 - x0, y1 - y0, z1 - z0]
+    print("The velocity vector of the ball is:")
+    print("("+str("%.2f" % velocity[0])+", "+str("%.2f" % velocity[1])+", "+str("%.2f" % velocity[2])+")")
+    x_fin = x1 + ((x1 - x0) * n)
+    y_fin = y1 + ((y1 - y0) * n)
+    z_fin = z1 + ((z1 - z0) * n)
+    print("At time t + " + str(n) + ", ball coordinates will be:")
+    print("("+str("%.2f" % x_fin)+", "+str("%.2f" % y_fin)+", "+str("%.2f" % z_fin)+")")
+    if (velocity[2] > 0 and z1 < 0) or (velocity[2] < 0 and z1 > 0):
+        angle = math.atan(velocity[2] / (math.sqrt(math.pow(velocity[0], 2) + math.pow(velocity[1], 2))))
+        if angle < 0:
+            angle = -angle * (float(180) / math.pi)
+        else:
+            angle = angle * (float(180) / math.pi)
+        print("The incidence angle is:\n%.2f" % angle, "degrees")
+        exit(0)
+    else:
+        print("The ball won't reach the paddle.")
+        exit(0)
+
+def check_args():
+    if len(argv) == 2:
+        if argv[1] == '-h':
+            help()
+        else:
+            stderr.write("Wrong launch\nPlease type ./101pong -h\n")
+            exit(84)
+    elif len(argv) == 8:
+        try:
+            x0 = float(argv[1])
+            y0 = float(argv[2])
+            z0 = float(argv[3])
+            x1 = float(argv[4])
+            y1 = float(argv[5])
+            z1 = float(argv[6])
+            n = int(argv[7])
+        except:
+            stderr.write("Wrong launch\nPlease type ./101pong -h\n")
+            exit(84)
+        if n >= 0:
+            calculate(x0, y0, z0, x1, y1, z1, n)
+        else:
+            stderr.write("Wrong launch\nPlease type ./101pong -h\n")
+            exit(84)
+    else:
+        stderr.write("Wrong launch\nPlease type ./101pong -h\n")
+        exit(84)
+
+def help():
+    print("USAGE")
+    print("    ./101pong x0 y0 z0 x1 y1 z1 n")
+    print("\nDESCRIPTION")
+    print("    x0  ball abscissa at time t - 1")
+    print("    y0  ball ordinate at time t - 1")
+    print("    z0  ball altitude at time t - 1")
+    print("    x1  ball abscissa at time t")
+    print("    y1  ball ordinate at time t")
+    print("    z1  ball altitude at time t")
+    print("    n   time shift (greater than or equal to zero, integer)")
+
+check_args()
+exit(0)

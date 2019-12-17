@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+
+from tkinter import *
+from tkinter.messagebox import *
+import pyperclip
+import crypting_functions
+
+crypting_list = ["Cipher", "Cesar", "Progressive Cesar", "Vigenere", "Rail Fence"]
+
+class Cryptage(object):
+    window = Tk()
+    window.title("Cryptage")
+    window.geometry("1000x700+150+150")
+
+    def __init__(self):
+        self.main_menu()
+        self.window.mainloop()
+
+    def clean(self):
+        """Clean the window"""
+        for c in self.window.winfo_children():
+            c.destroy()
+
+    def main_menu(self):
+        self.clean()
+        crypt = Button(self.window, text="Encrypt", command=self.cryptage_menu)
+        decrypt = Button(self.window, text="Decrypt", command=self.decryptage_menu)
+        leave = Button(self.window, text="Leave", command=self.window.destroy)
+
+        crypt.place(x=300, y=200, width=400, height=40)
+        decrypt.place(x=300, y=300, width=400, height=40)
+        leave.place(x=300, y=400, width=400, height=40)
+
+    def cryptage_menu(self):
+        global crypting_list
+
+        self.clean()
+        self.selected_cryptage = StringVar()
+        self.text = StringVar()
+        self.key_text = StringVar()
+        self.nb_dec = IntVar()
+        self.result = StringVar()
+
+        self.selected_cryptage.set("Cipher")
+        self.text.set("This text will be crypted")
+        self.key_text.set("Cyrilus Grosjeanus")
+        self.result.set("")
+        self.nb_dec.set(1)
+
+        select_menu = OptionMenu(self.window, self.selected_cryptage, *crypting_list)
+        text_crypt_label = Label(self.window, text="Text to be crypted:")
+        text_crypt = Entry(self.window, textvariable=self.text)
+        key = Entry(self.window, textvariable=self.key_text)
+        key_label = Label(self.window, text="Key encryption:")
+        nb_dec = Spinbox(self.window, from_=1, to=24, textvariable=self.nb_dec)
+        nb_dec_label = Label(self.window, text="Shift:")
+        result_label = Label(self.window, textvariable=self.result)
+        crypt = Button(self.window, text="Crypt", command=self.crypt)
+        copy = Button(self.window, text="Copy result", command=self.copy)
+        leave = Button(self.window, text="Back", command=self.main_menu)
+
+        select_menu.place(x=300, y=50, width=400, height=40)
+        text_crypt_label.place(x=170, y=120)
+        text_crypt.place(x=300, y=110, width=400, height=40)
+        key_label.place(x=190, y=210)
+        key.place(x=300, y=200, width=400, height=40)
+        nb_dec_label.place(x=260, y=310)
+        nb_dec.place(x=300, y=300, width=400, height=40)
+        crypt.place(x=300, y=350, width=400, height=40)
+        result_label.place(x=300, y=400)
+        copy.place(x=300, y=550, width=400, height=40)
+        leave.place(x=300, y=600, width=400, height=40)
+
+    def copy(self):
+        pyperclip.copy(self.result.get())
+        showinfo("Cryptage", "Result message was copied on clipboard !")
+
+    def decryptage_menu(self):
+        global crypting_list
+
+        self.clean()
+        self.selected_cryptage = StringVar()
+        self.text = StringVar()
+        self.key_text = StringVar()
+        self.nb_dec = IntVar()
+        self.result = StringVar()
+
+        self.selected_cryptage.set("Cipher")
+        self.text.set("This text is crypted")
+        self.key_text.set("CCrashyrilus Grosjeanus")
+        self.result.set("")
+        self.nb_dec.set(1)
+
+        select_menu = OptionMenu(self.window, self.selected_cryptage, *crypting_list)
+        text_crypt_label = Label(self.window, text="Text to be uncrypted:")
+        text_crypt = Entry(self.window, textvariable=self.text)
+        key = Entry(self.window, textvariable=self.key_text)
+        key_label = Label(self.window, text="Key encryption:")
+        nb_dec = Spinbox(self.window, from_=1, to=24, textvariable=self.nb_dec)
+        nb_dec_label = Label(self.window, text="Shift:")
+        result_label = Label(self.window, textvariable=self.result)
+        crypt = Button(self.window, text="Uncrypt", command=self.uncrypt)
+        copy = Button(self.window, text="Copy result", command=self.copy)
+        leave = Button(self.window, text="Back", command=self.main_menu)
+
+        select_menu.place(x=300, y=50, width=400, height=40)
+        text_crypt_label.place(x=150, y=120)
+        text_crypt.place(x=300, y=110, width=400, height=40)
+        key_label.place(x=190, y=210)
+        key.place(x=300, y=200, width=400, height=40)
+        nb_dec_label.place(x=260, y=310)
+        nb_dec.place(x=300, y=300, width=400, height=40)
+        crypt.place(x=300, y=350, width=400, height=40)
+        result_label.place(x=300, y=400)
+        copy.place(x=300, y=550, width=400, height=40)
+        leave.place(x=300, y=600, width=400, height=40)
+
+    def crypt(self):
+        if self.nb_dec.get() < 1 or self.nb_dec.get() > 24 or self.key_text.get() == "":
+            self.result.set("Syntax error: Invalid input")
+        else:
+            if self.selected_cryptage.get() == "Cipher":
+                matrix_key = crypting_functions.create_key_matrix(self.key_text.get())
+                text = crypting_functions.cipher_encryption(matrix_key, self.text.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Cesar":
+                text = crypting_functions.cesar_encryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Progressive Cesar":
+                text = crypting_functions.progressive_cesar_encryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Vigenere":
+                text = crypting_functions.vigenere_encryption(self.text.get(), self.key_text.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Rail Fence":
+                text = crypting_functions.rail_fence_encryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+
+    def uncrypt(self):
+        if self.nb_dec.get() < 1 or self.nb_dec.get() > 24 or self.key_text.get() == "":
+            self.result.set("Syntax error: Invalid input")
+        else:
+            if self.selected_cryptage.get() == "Cipher":
+                matrix_key = crypting_functions.create_key_matrix(self.key_text.get())
+                matrix = crypting_functions.get_matrix_invert(matrix_key)
+                text = crypting_functions.cipher_uncryption(matrix, self.text.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Cesar":
+                text = crypting_functions.cesar_uncryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Progressive Cesar":
+                text = crypting_functions.progressive_cesar_uncryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Vigenere":
+                text = crypting_functions.vigenere_uncryption(self.text.get(), self.key_text.get())
+                self.result.set(text)
+            if self.selected_cryptage.get() == "Rail Fence":
+                text = crypting_functions.rail_fence_uncryption(self.text.get(), self.nb_dec.get())
+                self.result.set(text)
+
+Cryptage()
