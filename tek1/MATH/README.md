@@ -2,7 +2,7 @@ MATH contient les projets ci-dessous:
 - 101pong : Calcul d'angle d'incidence
 - 102architect : Transformation de vecteurs dans un repère 3D grâce à une matrice
 - 103cipher : Cryptage et décryptage de Hill
-- 104intersection
+- 104intersection : Calcul de points d'intersections entre un objet 3D et une droite.
 - 105torus
 
 Projets contenant des bonus:
