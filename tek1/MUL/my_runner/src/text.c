@@ -7,6 +7,13 @@
 
 #include "../include/runner.h"
 
+void update_text_score(window_t *w)
+{
+    sfText_setString(w->best1, w->score_1);
+    sfText_setString(w->best2, w->score_2);
+    sfText_setString(w->best3, w->score_3);
+}
+
 sfText *set_color_text(sfText *sp_text, char *text)
 {
     if (text[0] == 'Y')

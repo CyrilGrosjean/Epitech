@@ -12,12 +12,12 @@ int count_objects(char *map)
     int nb = 0;
 
     for (int i = 0; map[i]; i += 1)
-        if (map[i] == '1')
+        if (map[i] == '1' || map[i] == '2')
             nb += 1;
     return (nb);
 }
 
-int read_file(char *file)
+int read_file(char *file, char *name)
 {
     int fd = open(file, O_RDONLY);
     int rd = 0;
@@ -33,7 +33,7 @@ int read_file(char *file)
     rd = read(fd, map, st.st_size);
     if (fd == -1 || rd == -1 || count_lines(map) != 8)
         return (putstr_error("Can't read map or invalid map.\n"));
-    val = initialisation(map);
+    val = initialisation(map, name);
     free(map);
     return (val);
 }

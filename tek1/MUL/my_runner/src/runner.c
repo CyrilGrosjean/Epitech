@@ -7,56 +7,59 @@
 
 #include "../include/runner.h"
 
-sprite_t update(sprite_t sprite)
+sprite_t update(sprite_t sprite, option_t *opt)
 {
     if (sprite.type == Sky)
-        update_sky(&sprite);
+        update_sky(&sprite, opt);
     if (sprite.type == Cloud)
-        update_clouds(&sprite);
+        update_clouds(&sprite, opt);
     if (sprite.type == Hills)
-        update_hills(&sprite);
+        update_hills(&sprite, opt);
     if (sprite.type == Trees || sprite.type == Floor)
-        update_trees_floor(&sprite);
-    if (sprite.type == Spike)
-        update_spike(&sprite);
+        update_trees_floor(&sprite, opt);
+    if (sprite.type == Spike || sprite.type == Platform)
+        update_spike_platform(&sprite, opt);
     return (sprite);
 }
 
-void display_window(window_t *w)
+void display_window(window_t *w, option_t *opt)
 {
-    if (sfTime_asMilliseconds(sfClock_getElapsedTime(w->refresh)) > 40) {
+    if (sfTime_asMilliseconds(sfClock_getElapsedTime(w->refresh)) > 30) {
         sfClock_restart(w->refresh);
+        update_end(w, opt);
         sfRenderWindow_clear(w->w, sfBlack);
     }
     for (int i = 0; i < w->object_numb; i += 1) {
         if (i == 5)
             update_player(&w->s[i], w);
-        else if ((!w->actual_w && w->s[i].type != Spike) || w->actual_w)
-            w->s[i] = w->s[i].func(w->s[i]);
+        else if ((w->actual_w < 1 && w->s[i].type != Spike) || w->actual_w == 1)
+            w->s[i] = w->s[i].func(w->s[i], opt);
         sfRenderWindow_drawSprite(w->w, w->s[i].s_sprite, NULL);
     }
-    if (!w->actual_w) {
-        reset_spikes(w);
-        sfRenderWindow_drawText(w->w, w->play, NULL);
-        sfRenderWindow_drawText(w->w, w->options, NULL);
-        sfRenderWindow_drawText(w->w, w->leave, NULL);
-    }
+    if (!w->actual_w)
+        display_main_menu(w);
+    if (w->actual_w == -1)
+        display_option_menu(w, opt);
+    update_score(w);
     sfRenderWindow_drawText(w->w, w->score, NULL);
     testing_lose(w);
 }
 
-void get_event(window_t *w)
+void get_event(window_t *w, option_t *opt) // C1 possible
 {
     while (sfRenderWindow_pollEvent(w->w, &w->event)) {
         if (w->event.type == sfEvtClosed)
             sfRenderWindow_close(w->w);
-        if (w->event.type == sfEvtKeyPressed)
+        if (w->event.type == sfEvtKeyPressed && w->actual_w > -1)
             manage_key_pressed(w->event.key, w);
-        manage_mouse(w);
+        if (w->actual_w > -1)
+            manage_mouse(w);
+        else
+            get_event_options(w, opt);
     }
 }
 
-int runner(window_t *w)
+int runner(window_t *w, option_t *opt)
 {
     w->w = sfRenderWindow_create(w->mode, w->name, sfResize | sfClose, NULL);
     if (!w->w)
@@ -64,8 +67,8 @@ int runner(window_t *w)
     sfRenderWindow_setFramerateLimit(w->w, 60);
     sfMusic_play(w->music);
     while (sfRenderWindow_isOpen(w->w)) {
-        display_window(w);
-        get_event(w);
+        display_window(w, opt);
+        get_event(w, opt);
         sfRenderWindow_display(w->w);
     }
     destroy_objects(w);

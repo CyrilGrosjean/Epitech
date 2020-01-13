@@ -1,7 +1,7 @@
 PSU (Prog Sys Unix) contient les projets ci-dessous:
 - my_printf : La fonction printf
 - my_sokoban : Réalisation du jeu sokoban dans un terminal grâce à ncurses
-- my_ls
+- my_ls : La commande ls dans un terminal linux / mac
 - minishell
 
 Projets contenant des bonus:

@@ -21,6 +21,8 @@ int count_len_line(char *str, int i)
 {
     int nb = 0;
 
+    if (i == 0)
+        i -= 1;
     for (i = i + 1; str[i] != '\n' && str[i]; i += 1)
         nb += 1;
     return (nb);

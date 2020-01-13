@@ -11,10 +11,11 @@ void manage_key_pressed(sfKeyEvent event, window_t *w)
 {
     if (event.code == sfKeyEscape)
         sfRenderWindow_close(w->w);
-    if (event.code == sfKeySpace && w->actual_w)
+    if (event.code == sfKeySpace && w->actual_w == 1)
         if (!w->player_is_jumping) {
-            sfMusic_play(w->jump);
+            sfSound_play(w->jump);
             w->player_is_jumping = 1;
+            w->player_is_on_platf = 0;
             w->velocity = -20;
             w->s[5].rect_sprite.top = 0;
             w->s[5].rect_sprite.left = 0;
@@ -23,40 +24,42 @@ void manage_key_pressed(sfKeyEvent event, window_t *w)
 
 void check_mouse_position(sfMouseMoveEvent event, window_t *w)
 {
+    static int button = -1;
+
     sfText_setColor(w->play, sfWhite);
     sfText_setColor(w->leave, sfWhite);
     sfText_setColor(w->options, sfWhite);
     if (event.x >= 1600 && event.x <= 1720)
-        if (event.y >= 715 && event.y <= 750) {
-            sfText_setColor(w->play, sfRed);
-            sfMusic_play(w->mouse_over);
-        }
-    if (event.x >= 1600 && event.x <= 1800)
-        if (event.y >= 770 && event.y <= 800) {
-            sfText_setColor(w->options, sfRed);
-            sfMusic_play(w->mouse_over);
-        }
-    if (event.x >= 1600 && event.x <= 1705)
-        if (event.y >= 820 && event.y <= 850) {
-            sfText_setColor(w->leave, sfRed);
-            sfMusic_play(w->mouse_over);
-        }
-}
-
-void manage_click_event(sfMouseButtonEvent event, window_t *w)
-{
-    if (event.x >= 1600 && event.x <= 1720)
-        if (event.y >= 715 && event.y <= 750) {
-            w->actual_w = 1;
-            sfRenderWindow_setMouseCursorVisible(w->w, sfFalse);
-            reset_speed(w);
-        }
+        if (event.y >= 715 && event.y <= 750)
+            button = selected_play(w, button);
     if (event.x >= 1600 && event.x <= 1800)
         if (event.y >= 770 && event.y <= 800)
-            sfRenderWindow_close(w->w);
+            button = selected_options(w, button);
     if (event.x >= 1600 && event.x <= 1705)
         if (event.y >= 820 && event.y <= 850)
-            sfRenderWindow_close(w->w);
+            button = selected_leave(w, button);
+}
+
+void manage_click_event(sfMouseButtonEvent event, window_t *w) // POSSIBLE C1
+{
+    if (!w->actual_w) {
+        if (event.x >= 1600 && event.x <= 1720 && !w->actual_w)
+            if (event.y >= 715 && event.y <= 750) {
+                sfSound_play(w->mouse_click);
+                sfRenderWindow_setMouseCursorVisible(w->w, sfFalse);
+                reset_speed(w);
+            }
+        if (event.x >= 1600 && event.x <= 1800 && !w->actual_w)
+            if (event.y >= 770 && event.y <= 800) {
+                sfSound_play(w->mouse_click);
+                w->actual_w = -1;
+            }
+        if (event.x >= 1600 && event.x <= 1705 && !w->actual_w)
+            if (event.y >= 820 && event.y <= 850) {
+                sfSound_play(w->mouse_click);
+                sfRenderWindow_close(w->w);
+            }
+    }
 }
 
 void manage_mouse(window_t *w)

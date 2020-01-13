@@ -19,6 +19,19 @@ SRC = 	src/main.c				\
 		src/text.c				\
 		src/music.c				\
 		src/reset.c				\
+		src/update_score.c		\
+		src/select_menu.c		\
+		src/help.c				\
+		src/init_options.c		\
+		src/display_menu.c 		\
+		src/option_event.c		\
+		src/modif_options.c		\
+		src/text_options.c		\
+		src/jump.c				\
+		src/init_best_score.c	\
+		src/open_best.c			\
+		src/save_best.c			\
+		src/check_best_score.c	\
 
 OBJ = 	$(SRC:.c=.o)
 
