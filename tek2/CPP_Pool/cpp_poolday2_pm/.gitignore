@@ -1,0 +1,6 @@
+double_list.h
+generic_list.h
+stack.h
+Makefile
+main.c
+queue.h

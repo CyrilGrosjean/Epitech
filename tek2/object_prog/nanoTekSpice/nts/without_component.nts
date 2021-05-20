@@ -1,0 +1,18 @@
+# Coucou je m'appelle Juan
+# Mon numéro c'est le 06.52.67.85.22
+
+.chipsets:
+clock cl_1_clock
+input in_1_data
+input in_1_set
+input in_1_reset
+output out_1_q
+output out_1_qb
+clock cl_2_clock
+input in_2_data
+input in_2_set
+input in_2_reset
+output out_2_q
+output out_2_qb
+
+.links:

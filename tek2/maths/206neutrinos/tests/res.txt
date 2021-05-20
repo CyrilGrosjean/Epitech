@@ -1,0 +1,55 @@
+Enter next value:       Number of values:       1924
+        Standard deviation:     2240.15
+        Arithmetic mean:        60.08
+        Root mean square:       2240.96
+        Harmonic mean:  39.02
+
+Enter next value:       Number of values:       1925
+        Standard deviation:     2277.77
+        Arithmetic mean:        69.55
+        Root mean square:       2278.83
+        Harmonic mean:  39.04
+
+Enter next value:       Number of values:       1926
+        Standard deviation:     207250.29
+        Arithmetic mean:        4792.94
+        Root mean square:       207305.70
+        Harmonic mean:  39.06
+
+Enter next value:       Number of values:       1927
+        Standard deviation:     287679.33
+        Arithmetic mean:        9340.43
+        Root mean square:       287830.93
+        Harmonic mean:  39.08
+
+Enter next value:       Number of values:       1928
+        Standard deviation:     6585700.31
+        Arithmetic mean:        159221.43
+        Root mean square:       6587624.77
+        Harmonic mean:  39.10
+
+Enter next value:       Number of values:       1929
+        Standard deviation:     6583993.94
+        Arithmetic mean:        159298.60
+        Root mean square:       6585920.76
+        Harmonic mean:  39.12
+
+Enter next value:       Number of values:       1930
+        Standard deviation:     6582288.50
+        Arithmetic mean:        159241.35
+        Root mean square:       6584214.44
+        Harmonic mean:  39.14
+
+Enter next value:       Number of values:       1931
+        Standard deviation:     6580584.86
+        Arithmetic mean:        159160.65
+        Root mean square:       6582509.34
+        Harmonic mean:  39.16
+
+Enter next value:       Number of values:       1932
+        Standard deviation:     6578883.53
+        Arithmetic mean:        159275.47
+        Root mean square:       6580811.28
+        Harmonic mean:  39.18
+
+Enter next value: 

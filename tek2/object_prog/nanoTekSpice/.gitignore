@@ -1,0 +1,12 @@
+# Binary, temp files
+*.o
+*.gc*
+nanotekspice
+
+# Visual Studio Code temp files
+.vscode
+
+# Logs
+# *.log
+.errorCodes
+# .truthTables

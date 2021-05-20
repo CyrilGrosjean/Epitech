@@ -1,0 +1,11 @@
+.chipsets:
+input a(1)
+clock b # Juanito
+4081 and # Grosse
+output s # Bite
+
+.links:
+#a:1 and:1
+b:1 and:2 # T con
+and:1 s:1 # Moche
+# Bouffon de ta gram's lol ixdé

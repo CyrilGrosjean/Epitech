@@ -1,0 +1,154 @@
+/**
+ * AND Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   0  |
+ * |  0   1   0  |
+ * |  0   ?   0  |
+ * |  1   0   0  |
+ * |  1   1   1  |
+ * |  1   ?   ?  |
+ * |  ?   0   0  |
+ * |  ?   1   ?  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+ /**
+ * NAND Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   1  |
+ * |  0   1   1  |
+ * |  0   ?   1  |
+ * |  1   0   1  |
+ * |  1   1   0  |
+ * |  1   ?   ?  |
+ * |  ?   0   1  |
+ * |  ?   1   ?  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+/**
+ * OR Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   0  |
+ * |  0   1   1  |
+ * |  0   ?   ?  |
+ * |  1   0   1  |
+ * |  1   1   1  |
+ * |  1   ?   1  |
+ * |  ?   0   ?  |
+ * |  ?   1   1  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+ /**
+ * NOR Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   1  |
+ * |  0   1   0  |
+ * |  0   ?   ?  |
+ * |  1   0   0  |
+ * |  1   1   0  |
+ * |  1   ?   0  |
+ * |  ?   0   ?  |
+ * |  ?   1   0  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+ /**
+ * XOR Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   0  |
+ * |  0   1   1  |
+ * |  0   ?   ?  |
+ * |  1   0   1  |
+ * |  1   1   0  |
+ * |  1   ?   ?  |
+ * |  ?   0   ?  |
+ * |  ?   1   ?  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+ /**
+ * XNOR Logic Gate
+ * Truth table :
+ * +-------------+
+ * |  A   B  OUT |
+ * +-------------+
+ * |  0   0   1  |
+ * |  0   1   0  |
+ * |  0   ?   ?  |
+ * |  1   0   0  |
+ * |  1   1   1  |
+ * |  1   ?   ?  |
+ * |  ?   0   ?  |
+ * |  ?   1   ?  |
+ * |  ?   ?   ?  |
+ * +-------------+
+ */
+
+Flip Flop Logic Gate
+Truth table :
++--------------------+
+|  C  D  R  S  Q  B  |
++--------------------+
+|  1  0  0  0  0  1  |
+|  1  1  0  0  1  0  |
+|  0  x  0  0  Q  B  |
+|  x  x  1  0  0  1  |
+|  x  x  0  1  1  0  |
+|  x  x  1  1  1  1  |
+|  ?  ?  ?  ?  ?  ?  |
++--------------------+
+
+
+
+if (int_pinClock == 1 && int_pinReset == 0 && int_pinSet == 0 && int_pinData == 0) {
+    if (name == "q") {
+        return (nts::Tristate::FALSE);
+    } else {
+        return (nts::Tristate::TRUE);
+    }
+} else if (int_pinClock == 1 && int_pinReset == 0 && int_pinData == 1 && int_pinSet == 0) {
+    if (name == "q") {
+        return (nts::Tristate::TRUE);
+    } else {
+        return (nts::Tristate::FALSE);
+    }
+} else if (int_pinClock == 0 && int_pinReset == 0 && int_pinSet == 0) {
+    return (convertIntToTristate(qVal));
+} else if (int_pinReset == 1 && int_pinSet == 0) {
+    if (name == "q") {
+        return (nts::Tristate::FALSE);
+    } else {
+        return (nts::Tristate::TRUE);
+    }
+} else if (int_pinReset == 0 && int_pinSet == 1) {
+    if (name == "q") {
+        return (nts::Tristate::TRUE);
+    } else {
+        return (nts::Tristate::FALSE);
+    }
+} else if (int_pinReset == 1 && int_pinSet == 1) {
+    return (nts::Tristate::TRUE);
+}
+return (convertIntToTristate(qVal));

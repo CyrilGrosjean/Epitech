@@ -1,0 +1,11 @@
+ex00/main.c
+ex00/Makefile
+ex01/mem_ptr.h
+ex01/main.c
+ex01/Makefile
+ex02/main.c
+ex02/Makefile
+ex03/func_ptr_enum.h
+ex03/main.c
+ex03/Makefile
+ex04/castmania.h

@@ -1,0 +1,43 @@
+==7429== Memcheck, a memory error detector
+==7429== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==7429== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==7429== Command: ./nanotekspice nts/test_alteredcounter.nts
+==7429== 
+==7429== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
+==7429== 
+==7429== Process terminating with default action of signal 11 (SIGSEGV)
+==7429==  Access not within mapped region at address 0x1FFE801FC8
+==7429== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
+==7429==    at 0x13B04B: C_InputTmp::compute(unsigned long) (C_InputTmp.cpp:44)
+==7429==  If you believe this happened as a result of a stack
+==7429==  overflow in your program's main thread (unlikely but
+==7429==  possible), you can try to increase the size of the
+==7429==  main thread stack using the --main-stacksize= flag.
+==7429==  The main thread stack size used in this run was 8388608.
+==7429== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
+==7429== 
+==7429== Process terminating with default action of signal 11 (SIGSEGV)
+==7429==  Access not within mapped region at address 0x1FFE801FB8
+==7429== Stack overflow in thread #1: can't grow stack to 0x1ffe801000
+==7429==    at 0x4A2C650: _vgnU_freeres (in /usr/lib/valgrind/vgpreload_core-amd64-linux.so)
+==7429==  If you believe this happened as a result of a stack
+==7429==  overflow in your program's main thread (unlikely but
+==7429==  possible), you can try to increase the size of the
+==7429==  main thread stack using the --main-stacksize= flag.
+==7429==  The main thread stack size used in this run was 8388608.
+==7429== 
+==7429== HEAP SUMMARY:
+==7429==     in use at exit: 89,621 bytes in 145 blocks
+==7429==   total heap usage: 575 allocs, 430 frees, 137,276 bytes allocated
+==7429== 
+==7429== LEAK SUMMARY:
+==7429==    definitely lost: 0 bytes in 0 blocks
+==7429==    indirectly lost: 0 bytes in 0 blocks
+==7429==      possibly lost: 0 bytes in 0 blocks
+==7429==    still reachable: 89,621 bytes in 145 blocks
+==7429==         suppressed: 0 bytes in 0 blocks
+==7429== Reachable blocks (those to which a pointer was found) are not shown.
+==7429== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==7429== 
+==7429== For counts of detected and suppressed errors, rerun with: -v
+==7429== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
